@@ -1,0 +1,30 @@
+{
+	"name": "lib-business",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "packages/lib-business/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nx/js:swc",
+			"outputs": ["{options.outputPath}"],
+			"options": {
+				"outputPath": "dist/packages/lib-business/",
+				"main": "packages/lib-business/src/index.ts",
+				"tsConfig": "packages/lib-business/tsconfig.lib.json",
+				"assets": ["packages/lib-business/*.md"]
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:lint",
+			"outputs": ["{options.outputFile}"]
+		},
+		"test": {
+			"executor": "@nx/vite:test",
+			"outputs": ["{options.reportsDirectory}"],
+			"options": {
+				"reportsDirectory": "../../coverage/packages/lib-business/"
+			}
+		}
+	},
+	"tags": []
+}
