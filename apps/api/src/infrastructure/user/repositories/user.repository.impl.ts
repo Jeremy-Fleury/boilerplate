@@ -1,8 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { UserFactoryService } from "application/user/services/user-factory.service";
 import type { Email } from "domain/shared/value-objects/email.vo";
-import type { Uuid } from "domain/shared/value-objects/uuid.vo";
-import type { User } from "domain/user/entities/user.entity";
+import { User } from "domain/user/entities/user.entity";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
 import { PrismaService } from "infrastructure/prisma/services/prisma.service";
 
@@ -21,15 +19,15 @@ export class UserRepositoryImpl implements IUserRepository {
 			return null;
 		}
 
-		return UserFactoryService.fromJSON(user);
+		return User.fromJson(user);
 	}
 
 	async create(user: User): Promise<User> {
 		const createdUser = await this.prismaService.user.create({
-			data: user.toJSON(),
+			data: user.toJson(),
 		});
 
-		return UserFactoryService.fromJSON(createdUser);
+		return User.fromJson(createdUser);
 	}
 
 	async update(user: User): Promise<User> {
@@ -37,10 +35,10 @@ export class UserRepositoryImpl implements IUserRepository {
 			where: {
 				uuid: user.uuid.value,
 			},
-			data: user.toJSON(),
+			data: user.toJson(),
 		});
 
-		return UserFactoryService.fromJSON(updatedUser);
+		return User.fromJson(updatedUser);
 	}
 
 	async delete(email: Email): Promise<void> {

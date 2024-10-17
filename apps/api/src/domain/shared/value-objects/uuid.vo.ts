@@ -12,6 +12,7 @@ export class Uuid {
 	private validate(uuid: string) {
 		const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+		console.log("toto", uuid);
 		if (!regex.test(uuid)) {
 			throw new DomainException("Invalid UUID format");
 		}

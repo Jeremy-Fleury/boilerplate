@@ -5,7 +5,7 @@ import { HashPassword } from "domain/shared/value-objects/hashPassword.vo";
 import { Uuid } from "domain/shared/value-objects/uuid.vo";
 import { User } from "domain/user/entities/user.entity";
 import type { ICreateUser } from "domain/user/interface/create-user.interface";
-import type { IUserJSON } from "domain/user/interface/user-json.interface";
+import type { IUserJson } from "domain/user/interface/user-json.interface";
 
 export class UserFactoryService {
 	constructor(
@@ -22,14 +22,6 @@ export class UserFactoryService {
 			uuid,
 			email,
 			hashPassword,
-		});
-	}
-
-	public static fromJSON(json: IUserJSON): User {
-		return new User({
-			uuid: new Uuid(json.uuid),
-			email: new Email(json.email),
-			hashPassword: new HashPassword(json.hashPassword),
 		});
 	}
 }
