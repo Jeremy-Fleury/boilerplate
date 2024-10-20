@@ -7,6 +7,7 @@ import type { IHashService } from "domain/shared/interfaces/hash.service.interfa
 import type { IUuidService } from "domain/shared/interfaces/uuid.service.interface";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
 import { PrismaModule } from "infrastructure/prisma/prisma.module";
+import { SharedModule } from "infrastructure/shared/modules/shared.module";
 import { HASH_SERVICE, UUID_SERVICE } from "infrastructure/shared/modules/shared.token";
 import { UserController } from "infrastructure/user/controllers/user.controller";
 import {
@@ -15,7 +16,6 @@ import {
 	USER_REPOSITORY,
 } from "infrastructure/user/modules/user.token";
 import { UserRepositoryImpl } from "infrastructure/user/repositories/user.repository.impl";
-import { SharedModule } from "~/infrastructure/shared/modules/shared.module";
 
 const infrastructure: Provider[] = [
 	{

@@ -1,0 +1,8 @@
+model TodoList {
+    uuid      String   @id
+    title     String
+    ownerUuid String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    todos     Todo[]
+}
