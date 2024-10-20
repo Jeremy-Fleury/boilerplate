@@ -1,8 +1,8 @@
 import { Email } from "domain/shared/value-objects/email.vo";
 import { HashPassword } from "domain/shared/value-objects/hashPassword.vo";
 import { Uuid } from "domain/shared/value-objects/uuid.vo";
-import type { IUserJson } from "domain/user/interface/user-json.interface";
-import type { IUser } from "domain/user/interface/user.interface";
+import type { IUserJson } from "~/domain/user/interfaces/user-json.interface";
+import type { IUser } from "~/domain/user/interfaces/user.interface";
 
 export class User implements IUser {
 	public readonly uuid: Uuid;

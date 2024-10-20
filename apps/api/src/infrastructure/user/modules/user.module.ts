@@ -1,36 +1,26 @@
 import { Module } from "@nestjs/common";
 import type { Provider } from "@nestjs/common";
-import type { IHashService } from "application/shared/interfaces/hash.interface";
-import type { IUuidService } from "application/shared/interfaces/uuid.interface";
 import { UserFactoryService } from "application/user/services/user-factory.service";
 import { CreateUserUseCase } from "application/user/use-cases/create-user.use-cases";
 import { GetUserByEmailUseCase } from "application/user/use-cases/get-user-by-email.use-cases";
+import type { IHashService } from "domain/shared/interfaces/hash.service.interface";
+import type { IUuidService } from "domain/shared/interfaces/uuid.service.interface";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
 import { PrismaModule } from "infrastructure/prisma/prisma.module";
-import { HashServiceImpl } from "infrastructure/shared/services/hash.service";
-import { UuidGeneratorImpl } from "infrastructure/shared/services/uuid.service";
+import { HASH_SERVICE, UUID_SERVICE } from "infrastructure/shared/modules/shared.token";
 import { UserController } from "infrastructure/user/controllers/user.controller";
 import {
 	CREATE_USER_USE_CASE,
 	GET_USER_BY_EMAIL_USE_CASE,
-	HASH_SERVICE,
 	USER_REPOSITORY,
-	UUID_SERVICE,
 } from "infrastructure/user/modules/user.token";
 import { UserRepositoryImpl } from "infrastructure/user/repositories/user.repository.impl";
+import { SharedModule } from "~/infrastructure/shared/modules/shared.module";
 
 const infrastructure: Provider[] = [
 	{
 		provide: USER_REPOSITORY,
 		useClass: UserRepositoryImpl,
-	},
-	{
-		provide: UUID_SERVICE,
-		useClass: UuidGeneratorImpl,
-	},
-	{
-		provide: HASH_SERVICE,
-		useClass: HashServiceImpl,
 	},
 ];
 
@@ -59,7 +49,7 @@ const application: Provider[] = [
 ];
 
 @Module({
-	imports: [PrismaModule],
+	imports: [PrismaModule, SharedModule],
 	controllers: [UserController],
 	providers: [...application, ...infrastructure],
 	exports: [],

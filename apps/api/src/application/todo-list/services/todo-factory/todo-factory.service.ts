@@ -1,4 +1,4 @@
-import type { IUuidService } from "application/shared/interfaces/uuid.interface";
+import type { IUuidService } from "domain/shared/interfaces/uuid.service.interface";
 import { Uuid } from "domain/shared/value-objects/uuid.vo";
 import { Todo } from "domain/todo-list/entities/todo.entity";
 import type { ICreateTodo } from "domain/todo-list/interfaces/create-todo.interface";

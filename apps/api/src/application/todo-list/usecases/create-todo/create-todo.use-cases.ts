@@ -1,8 +1,8 @@
-import type { TodoFactoryService } from "application/todo-list/services/todo-factory.service";
 import type { Uuid } from "domain/shared/value-objects/uuid.vo";
 import type { Todo } from "domain/todo-list/entities/todo.entity";
 import type { ICreateTodo } from "domain/todo-list/interfaces/create-todo.interface";
 import type { ITodoRepository } from "domain/todo-list/repositories/todo.repository.interface";
+import type { TodoFactoryService } from "~/application/todo-list/services/todo-factory/todo-factory.service";
 
 export class CreateTodoUseCase {
 	constructor(
