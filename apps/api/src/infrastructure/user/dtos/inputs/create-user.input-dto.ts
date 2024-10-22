@@ -9,7 +9,6 @@ export class CreateUserInputDto {
 		type: String,
 	})
 	@IsEmail()
-	@IsNotEmpty()
 	email: string;
 
 	@ApiProperty({

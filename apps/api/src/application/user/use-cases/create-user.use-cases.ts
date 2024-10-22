@@ -1,6 +1,13 @@
 import type { UserFactoryService } from "application/user/services/user-factory.service";
-import type { ICreateUser } from "domain/user/interface/create-user.interface";
+import { Email } from "domain/shared/value-objects/email.vo";
+import { Password } from "domain/shared/value-objects/password.vo";
+import type { User } from "domain/user/entities/user.entity";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
+
+interface ICreateUserUseCaseParams {
+	email: string;
+	password: string;
+}
 
 export class CreateUserUseCase {
 	constructor(
@@ -8,8 +15,14 @@ export class CreateUserUseCase {
 		private readonly userFactoryService: UserFactoryService,
 	) {}
 
-	async execute(params: ICreateUser): Promise<void> {
-		const user = this.userFactoryService.create(params);
-		await this.userRepository.create(user);
+	async execute({ email, password }: ICreateUserUseCaseParams): Promise<User> {
+		const user = this.userFactoryService.create({
+			email: new Email(email),
+			password: new Password(password),
+		});
+
+		const createdUser = await this.userRepository.create(user);
+
+		return createdUser;
 	}
 }
