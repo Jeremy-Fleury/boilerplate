@@ -1,8 +1,8 @@
-import type { Email } from "domain/shared/value-objects/email.vo";
-import type { HashPassword } from "domain/shared/value-objects/hashPassword.vo";
-import type { Uuid } from "domain/shared/value-objects/uuid.vo";
-import type { IUserJSON } from "domain/user/interface/user-json.interface";
-import type { IUser } from "domain/user/interface/user.interface";
+import { Email } from "domain/shared/value-objects/email.vo";
+import { HashPassword } from "domain/shared/value-objects/hashPassword.vo";
+import { Uuid } from "domain/shared/value-objects/uuid.vo";
+import type { IUserJson } from "domain/user/interfaces/user-json.interface";
+import type { IUser } from "domain/user/interfaces/user.interface";
 
 export class User implements IUser {
 	public readonly uuid: Uuid;
@@ -15,7 +15,15 @@ export class User implements IUser {
 		this.hashPassword = user.hashPassword;
 	}
 
-	public toJSON(): IUserJSON {
+	public static fromJson(json: IUserJson): User {
+		return new User({
+			uuid: new Uuid(json.uuid),
+			email: new Email(json.email),
+			hashPassword: new HashPassword(json.hashPassword),
+		});
+	}
+
+	public toJson(): IUserJson {
 		return {
 			uuid: this.uuid.value,
 			email: this.email.value,

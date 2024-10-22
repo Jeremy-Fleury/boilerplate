@@ -1,11 +1,15 @@
-import type { IHashService } from "application/shared/interfaces/hash.interface";
-import type { IUuidService } from "application/shared/interfaces/uuid.interface";
-import { Email } from "domain/shared/value-objects/email.vo";
+import type { IHashService } from "domain/shared/interfaces/hash.service.interface";
+import type { IUuidService } from "domain/shared/interfaces/uuid.service.interface";
+import type { Email } from "domain/shared/value-objects/email.vo";
 import { HashPassword } from "domain/shared/value-objects/hashPassword.vo";
+import type { Password } from "domain/shared/value-objects/password.vo";
 import { Uuid } from "domain/shared/value-objects/uuid.vo";
 import { User } from "domain/user/entities/user.entity";
-import type { ICreateUser } from "domain/user/interface/create-user.interface";
-import type { IUserJSON } from "domain/user/interface/user-json.interface";
+
+interface IUserFactoryServiceParams {
+	email: Email;
+	password: Password;
+}
 
 export class UserFactoryService {
 	constructor(
@@ -13,23 +17,14 @@ export class UserFactoryService {
 		private readonly hashService: IHashService,
 	) {}
 
-	public create(params: ICreateUser): User {
+	public create({ email, password }: IUserFactoryServiceParams): User {
 		const uuid = new Uuid(this.uuidService.generateV4());
-		const email = params.email;
-		const hashPassword = new HashPassword(this.hashService.sha512(params.password.value));
+		const hashPassword = new HashPassword(this.hashService.sha512(password.value));
 
 		return new User({
 			uuid,
 			email,
 			hashPassword,
-		});
-	}
-
-	public static fromJSON(json: IUserJSON): User {
-		return new User({
-			uuid: new Uuid(json.uuid),
-			email: new Email(json.email),
-			hashPassword: new HashPassword(json.hashPassword),
 		});
 	}
 }

@@ -31,10 +31,12 @@ export class UserController {
 
 	@ApiBody({ type: CreateUserInputDto })
 	@Post()
-	async create(@Body() dto: CreateUserInputDto): Promise<void> {
-		await this.createUserUseCase.execute({
-			email: new Email(dto.email),
-			password: new Password(dto.password),
-		});
+	async create(@Body() dto: CreateUserInputDto): Promise<UserOutputDto> {
+		const user = await this.createUserUseCase.execute(dto);
+
+		return {
+			uuid: user.uuid.value,
+			email: user.email.value,
+		};
 	}
 }
