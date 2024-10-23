@@ -1,16 +1,18 @@
 import { Module } from "@nestjs/common";
 import type { Provider } from "@nestjs/common";
+import type { PrismaClient } from "@prisma/client";
 import { UserFactoryService } from "application/user/services/user-factory.service";
 import { CreateUserUseCase } from "application/user/use-cases/create-user.use-cases";
 import { GetUserByEmailUseCase } from "application/user/use-cases/get-user-by-email.use-cases";
 import { UpdateUserPasswordUseCase } from "application/user/use-cases/update-user.use-cases";
 import type { IHashService } from "domain/shared/interfaces/hash.service.interface";
+import type { IUnitOfWorkService } from "domain/shared/interfaces/unit-of-work.service.interface";
 import type { IUuidService } from "domain/shared/interfaces/uuid.service.interface";
-import type { IUnitOfWorkRepository } from "domain/shared/repositories/unit-of-work.repository.interface";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
-import { PrismaModule } from "infrastructure/prisma/prisma.module";
+import { PrismaModule } from "infrastructure/prisma/modules/prisma.module";
+import { PRISMA_SERVICE, UNIT_OF_WORK_SERVICE } from "infrastructure/prisma/modules/prisma.token";
 import { SharedModule } from "infrastructure/shared/modules/shared.module";
-import { HASH_SERVICE, UNIT_OF_WORK_REPOSITORY, UUID_SERVICE } from "infrastructure/shared/modules/shared.token";
+import { HASH_SERVICE, UUID_SERVICE } from "infrastructure/shared/modules/shared.token";
 import { UserController } from "infrastructure/user/controllers/user.controller";
 import {
 	CREATE_USER_USE_CASE,
@@ -23,7 +25,10 @@ import { UserRepositoryImpl } from "infrastructure/user/repositories/user.reposi
 const infrastructure: Provider[] = [
 	{
 		provide: USER_REPOSITORY,
-		useClass: UserRepositoryImpl,
+		useFactory: (prisma: PrismaClient) => {
+			return new UserRepositoryImpl(prisma);
+		},
+		inject: [PRISMA_SERVICE],
 	},
 ];
 
@@ -51,10 +56,10 @@ const application: Provider[] = [
 	},
 	{
 		provide: UPDATE_USER_PASSWORD_USE_CASE,
-		useFactory: (unitOfWorkRepository: IUnitOfWorkRepository, hashService: IHashService) => {
-			return new UpdateUserPasswordUseCase(unitOfWorkRepository, hashService);
+		useFactory: (unitOfWorkService: IUnitOfWorkService, hashService: IHashService) => {
+			return new UpdateUserPasswordUseCase(unitOfWorkService, hashService);
 		},
-		inject: [UNIT_OF_WORK_REPOSITORY, HASH_SERVICE],
+		inject: [UNIT_OF_WORK_SERVICE, HASH_SERVICE],
 	},
 ];
 

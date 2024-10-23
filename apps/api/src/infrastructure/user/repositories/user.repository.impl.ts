@@ -1,13 +1,11 @@
-import { Inject, Injectable } from "@nestjs/common";
 import type { Prisma } from "@prisma/client";
 import type { Email } from "domain/shared/value-objects/email.vo";
 import { User } from "domain/user/entities/user.entity";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
-import { PrismaService } from "infrastructure/prisma/services/prisma.service";
+import type { PrismaService } from "infrastructure/prisma/services/prisma.service";
 
-@Injectable()
 export class UserRepositoryImpl implements IUserRepository {
-	constructor(@Inject(PrismaService) private readonly prisma: PrismaService | Prisma.TransactionClient) {}
+	constructor(private readonly prisma: PrismaService | Prisma.TransactionClient) {}
 
 	async findByEmail(email: Email): Promise<User | null> {
 		const user = await this.prisma.user.findUnique({
