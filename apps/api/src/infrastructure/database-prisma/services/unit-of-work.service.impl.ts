@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
-import type { IUnitOfWorkContext } from "domain/shared/interfaces/unit-of-work-context.interface";
-import type { IUnitOfWorkService } from "domain/shared/interfaces/unit-of-work.service.interface";
+import type { IUnitOfWorkContext } from "domain/database/interfaces/unit-of-work-context.interface";
+import type { IUnitOfWorkService } from "domain/database/interfaces/unit-of-work.service.interface";
 import { UserRepositoryImpl } from "infrastructure/user/repositories/user.repository.impl";
 
 export class UnitOfWorkServiceImpl implements IUnitOfWorkService {
