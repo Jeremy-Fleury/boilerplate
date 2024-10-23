@@ -32,6 +32,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 		const response = ctx.getResponse();
 		const statusCode = this.getStatusCode(exception);
 
+		// TODO: change console to winston logger
+		console.error(exception);
+
 		response.status(statusCode).json({
 			statusCode,
 			message: exception.message,
