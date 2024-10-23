@@ -1,4 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
+import type { Prisma } from "@prisma/client";
 import type { Email } from "domain/shared/value-objects/email.vo";
 import { User } from "domain/user/entities/user.entity";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
@@ -6,10 +7,10 @@ import { PrismaService } from "infrastructure/prisma/services/prisma.service";
 
 @Injectable()
 export class UserRepositoryImpl implements IUserRepository {
-	constructor(@Inject(PrismaService) private readonly prismaService: PrismaService) {}
+	constructor(@Inject(PrismaService) private readonly prisma: PrismaService | Prisma.TransactionClient) {}
 
 	async findByEmail(email: Email): Promise<User | null> {
-		const user = await this.prismaService.user.findUnique({
+		const user = await this.prisma.user.findUnique({
 			where: {
 				email: email.value,
 			},
@@ -23,7 +24,7 @@ export class UserRepositoryImpl implements IUserRepository {
 	}
 
 	async create(user: User): Promise<User> {
-		const createdUser = await this.prismaService.user.create({
+		const createdUser = await this.prisma.user.create({
 			data: user.toJson(),
 		});
 
@@ -31,7 +32,7 @@ export class UserRepositoryImpl implements IUserRepository {
 	}
 
 	async update(user: User): Promise<User> {
-		const updatedUser = await this.prismaService.user.update({
+		const updatedUser = await this.prisma.user.update({
 			where: {
 				uuid: user.uuid.value,
 			},
@@ -42,7 +43,7 @@ export class UserRepositoryImpl implements IUserRepository {
 	}
 
 	async delete(email: Email): Promise<void> {
-		await this.prismaService.user.delete({
+		await this.prisma.user.delete({
 			where: {
 				email: email.value,
 			},

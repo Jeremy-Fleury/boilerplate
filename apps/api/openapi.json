@@ -27,6 +27,26 @@
 					}
 				},
 				"tags": ["User"]
+			},
+			"put": {
+				"operationId": "UserController_updateUserPassword",
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUserPasswordInputDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["User"]
 			}
 		},
 		"/user": {
@@ -45,7 +65,14 @@
 				},
 				"responses": {
 					"201": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserOutputDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": ["User"]
@@ -98,6 +125,22 @@
 					}
 				},
 				"required": ["email", "password"]
+			},
+			"UpdateUserPasswordInputDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"description": "The email address of the user",
+						"example": "user@example.com"
+					},
+					"newPassword": {
+						"type": "string",
+						"description": "The new password for the user account",
+						"example": "!Password1234"
+					}
+				},
+				"required": ["email", "newPassword"]
 			}
 		}
 	}
