@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Inject, Param, Post, Put } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
-import type { CreateUserUseCase } from "application/user/use-cases/create-user.use-cases";
-import type { GetUserByEmailUseCase } from "application/user/use-cases/get-user-by-email.use-cases";
 import type { UpdateUserPasswordUseCase } from "application/user/use-cases/update-user.use-cases";
 import {
 	CREATE_USER_USE_CASE,
 	GET_USER_BY_EMAIL_USE_CASE,
 	UPDATE_USER_PASSWORD_USE_CASE,
 } from "infrastructure/user/modules/user.token";
+import type { CreateUserUseCase } from "~/application/user/use-cases/create-user/create-user.use-cases";
+import type { GetUserByEmailUseCase } from "~/application/user/use-cases/get-user-by-email/get-user-by-email.use-cases";
 import { UserInputDto } from "~/infrastructure/user/dtos/inputs/user.input-dto";
 import { UserOutputDto } from "../dtos/outputs/user.output-dto";
 

@@ -1,7 +1,7 @@
+import type { IUnitOfWorkContext } from "domain/database/interfaces/unit-of-work-context.interface";
+import type { IUnitOfWorkService } from "domain/database/interfaces/unit-of-work.service.interface";
 import { ApplicationException } from "domain/shared/exceptions/application-exception";
 import type { IHashService } from "domain/shared/interfaces/hash.service.interface";
-import type { IUnitOfWorkContext } from "domain/shared/interfaces/unit-of-work-context.interface";
-import type { IUnitOfWorkService } from "domain/shared/interfaces/unit-of-work.service.interface";
 import { Email } from "domain/shared/value-objects/email.vo";
 import { HashPassword } from "domain/shared/value-objects/hashPassword.vo";
 import { Password } from "domain/shared/value-objects/password.vo";

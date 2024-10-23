@@ -2,6 +2,18 @@ import type { OnModuleDestroy, OnModuleInit } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+	constructor() {
+		super({
+			log: [
+				{ emit: "stdout", level: "query" },
+				{ emit: "stdout", level: "info" },
+				{ emit: "stdout", level: "warn" },
+				{ emit: "stdout", level: "error" },
+			],
+			errorFormat: "colorless",
+		});
+	}
+
 	async onModuleInit() {
 		await this.$connect();
 	}
