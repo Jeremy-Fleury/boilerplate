@@ -9,7 +9,7 @@ import type { User } from "domain/user/entities/user.entity";
 
 interface UpdateUserPasswordUseCaseParams {
 	email: string;
-	newPassword: string;
+	password: string;
 }
 
 export class UpdateUserPasswordUseCase {
@@ -26,7 +26,7 @@ export class UpdateUserPasswordUseCase {
 				throw new ApplicationException("User not found");
 			}
 
-			const password = new Password(params.newPassword);
+			const password = new Password(params.password);
 			const hashPassword = new HashPassword(this.hashService.sha512(password.value));
 
 			user.hashPassword = hashPassword;

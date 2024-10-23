@@ -7,9 +7,9 @@ export class UnitOfWorkServiceImpl implements IUnitOfWorkService {
 	constructor(private readonly prisma: PrismaClient) {}
 
 	async execute<T>(callback: (context: IUnitOfWorkContext) => Promise<T>): Promise<T> {
-		return this.prisma.$transaction(async (transactionPrisma) => {
+		return this.prisma.$transaction(async (transaction) => {
 			const context: IUnitOfWorkContext = {
-				userRepository: new UserRepositoryImpl(transactionPrisma),
+				userRepository: new UserRepositoryImpl(transaction),
 			};
 
 			return callback(context);

@@ -18,55 +18,54 @@ import {
 	CREATE_USER_USE_CASE,
 	GET_USER_BY_EMAIL_USE_CASE,
 	UPDATE_USER_PASSWORD_USE_CASE,
+	USER_FACTORY_SERVICE,
 	USER_REPOSITORY,
 } from "infrastructure/user/modules/user.token";
 import { UserRepositoryImpl } from "infrastructure/user/repositories/user.repository.impl";
 
-const infrastructure: Provider[] = [
-	{
-		provide: USER_REPOSITORY,
-		useFactory: (prisma: PrismaClient) => {
-			return new UserRepositoryImpl(prisma);
-		},
-		inject: [PRISMA_SERVICE],
+const userRepository: Provider = {
+	provide: USER_REPOSITORY,
+	useFactory: (prisma: PrismaClient) => {
+		return new UserRepositoryImpl(prisma);
 	},
-];
+	inject: [PRISMA_SERVICE],
+};
 
-const application: Provider[] = [
-	{
-		provide: UserFactoryService,
-		useFactory: (uuidService: IUuidService, hashService: IHashService) => {
-			return new UserFactoryService(uuidService, hashService);
-		},
-		inject: [UUID_SERVICE, HASH_SERVICE],
+const userFactoryService: Provider = {
+	provide: USER_FACTORY_SERVICE,
+	useFactory: (uuidService: IUuidService, hashService: IHashService) => {
+		return new UserFactoryService(uuidService, hashService);
 	},
-	{
-		provide: GET_USER_BY_EMAIL_USE_CASE,
-		useFactory: (userRepository: IUserRepository) => {
-			return new GetUserByEmailUseCase(userRepository);
-		},
-		inject: [USER_REPOSITORY],
+	inject: [UUID_SERVICE, HASH_SERVICE],
+};
+
+const getUserByEmailUseCase: Provider = {
+	provide: GET_USER_BY_EMAIL_USE_CASE,
+	useFactory: (userRepository: IUserRepository) => {
+		return new GetUserByEmailUseCase(userRepository);
 	},
-	{
-		provide: CREATE_USER_USE_CASE,
-		useFactory: (userRepository: IUserRepository, userFactoryService: UserFactoryService) => {
-			return new CreateUserUseCase(userRepository, userFactoryService);
-		},
-		inject: [USER_REPOSITORY, UserFactoryService],
+	inject: [USER_REPOSITORY],
+};
+
+const createUserUseCase: Provider = {
+	provide: CREATE_USER_USE_CASE,
+	useFactory: (userRepository: IUserRepository, userFactoryService: UserFactoryService) => {
+		return new CreateUserUseCase(userRepository, userFactoryService);
 	},
-	{
-		provide: UPDATE_USER_PASSWORD_USE_CASE,
-		useFactory: (unitOfWorkService: IUnitOfWorkService, hashService: IHashService) => {
-			return new UpdateUserPasswordUseCase(unitOfWorkService, hashService);
-		},
-		inject: [UNIT_OF_WORK_SERVICE, HASH_SERVICE],
+	inject: [USER_REPOSITORY, USER_FACTORY_SERVICE],
+};
+
+const updateUserPasswordUseCase: Provider = {
+	provide: UPDATE_USER_PASSWORD_USE_CASE,
+	useFactory: (unitOfWorkService: IUnitOfWorkService, hashService: IHashService) => {
+		return new UpdateUserPasswordUseCase(unitOfWorkService, hashService);
 	},
-];
+	inject: [UNIT_OF_WORK_SERVICE, HASH_SERVICE],
+};
 
 @Module({
 	imports: [PrismaModule, SharedModule],
 	controllers: [UserController],
-	providers: [...application, ...infrastructure],
-	exports: [],
+	providers: [userRepository, userFactoryService, getUserByEmailUseCase, createUserUseCase, updateUserPasswordUseCase],
 })
 export class UserModule {}

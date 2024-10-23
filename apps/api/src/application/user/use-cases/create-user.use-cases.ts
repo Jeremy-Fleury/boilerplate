@@ -15,10 +15,10 @@ export class CreateUserUseCase {
 		private readonly userFactoryService: UserFactoryService,
 	) {}
 
-	async execute({ email, password }: ICreateUserUseCaseParams): Promise<User> {
+	async execute(params: ICreateUserUseCaseParams): Promise<User> {
 		const user = this.userFactoryService.create({
-			email: new Email(email),
-			password: new Password(password),
+			email: new Email(params.email),
+			password: new Password(params.password),
 		});
 
 		const createdUser = await this.userRepository.create(user);

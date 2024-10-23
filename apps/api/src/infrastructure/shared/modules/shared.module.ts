@@ -5,21 +5,24 @@ import { HashServiceImpl } from "infrastructure/shared/services/hash.service";
 import { UuidGeneratorImpl } from "infrastructure/shared/services/uuid.service";
 import { HASH_SERVICE, UUID_SERVICE } from "./shared.token";
 
-const infrastructure: Provider[] = [
-	{
-		provide: UUID_SERVICE,
-		useClass: UuidGeneratorImpl,
+const uuidService: Provider = {
+	provide: UUID_SERVICE,
+	useFactory: () => {
+		return new UuidGeneratorImpl();
 	},
-	{
-		provide: HASH_SERVICE,
-		useClass: HashServiceImpl,
+};
+
+const hashService: Provider = {
+	provide: HASH_SERVICE,
+	useFactory: () => {
+		return new HashServiceImpl();
 	},
-];
+};
 
 @Module({
 	imports: [],
 	controllers: [],
-	providers: [...infrastructure],
+	providers: [uuidService, hashService],
 	exports: [UUID_SERVICE, HASH_SERVICE],
 })
 export class SharedModule {}

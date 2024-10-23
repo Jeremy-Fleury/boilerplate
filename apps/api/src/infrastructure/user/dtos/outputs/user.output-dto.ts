@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsUUID } from "class-validator";
+import type { User } from "domain/user/entities/user.entity";
 
 export class UserOutputDto {
 	@ApiProperty({
@@ -21,4 +22,11 @@ export class UserOutputDto {
 	@IsEmail()
 	@IsNotEmpty()
 	email: string;
+
+	static map(user: User): UserOutputDto {
+		return {
+			uuid: user.uuid.value,
+			email: user.email.value,
+		};
+	}
 }
