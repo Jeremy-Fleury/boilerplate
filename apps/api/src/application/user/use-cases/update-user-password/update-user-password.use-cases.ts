@@ -2,9 +2,6 @@ import type { IUnitOfWorkContext } from "domain/database/interfaces/unit-of-work
 import type { IUnitOfWorkService } from "domain/database/interfaces/unit-of-work.service.interface";
 import { ApplicationException } from "domain/shared/exceptions/application-exception";
 import type { IHashService } from "domain/shared/interfaces/hash.service.interface";
-import { Email } from "domain/shared/value-objects/email.vo";
-import { HashPassword } from "domain/shared/value-objects/hashPassword.vo";
-import { Password } from "domain/shared/value-objects/password.vo";
 import type { User } from "domain/user/entities/user.entity";
 
 interface UpdateUserPasswordUseCaseParams {
@@ -20,16 +17,13 @@ export class UpdateUserPasswordUseCase {
 
 	async execute(params: UpdateUserPasswordUseCaseParams): Promise<User> {
 		return this.unitOfWorkService.execute(async (context: IUnitOfWorkContext) => {
-			const user = await context.userRepository.findByEmail(new Email(params.email));
+			const user = await context.userRepository.findByEmail(params.email);
 
 			if (!user) {
 				throw new ApplicationException("User not found");
 			}
 
-			const password = new Password(params.password);
-			const hashPassword = new HashPassword(this.hashService.sha512(password.value));
-
-			user.hashPassword = hashPassword;
+			user.hashPassword = this.hashService.sha512(params.password);
 
 			const updatedUser = await context.userRepository.update(user);
 

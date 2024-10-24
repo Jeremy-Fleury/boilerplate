@@ -1,13 +1,12 @@
 import { Module } from "@nestjs/common";
 import type { Provider } from "@nestjs/common";
 import type { PrismaClient } from "@prisma/client";
-import { UpdateUserPasswordUseCase } from "application/user/use-cases/update-user.use-cases";
+import type { IUnitOfWorkService } from "domain/database/interfaces/unit-of-work.service.interface";
 import type { IHashService } from "domain/shared/interfaces/hash.service.interface";
-import type { IUnitOfWorkService } from "domain/shared/interfaces/unit-of-work.service.interface";
 import type { IUuidService } from "domain/shared/interfaces/uuid.service.interface";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
-import { PrismaModule } from "infrastructure/prisma/modules/prisma.module";
-import { PRISMA_SERVICE, UNIT_OF_WORK_SERVICE } from "infrastructure/prisma/modules/prisma.token";
+import { PrismaModule } from "infrastructure/database-prisma/modules/prisma.module";
+import { PRISMA_SERVICE, UNIT_OF_WORK_SERVICE } from "infrastructure/database-prisma/modules/prisma.token";
 import { SharedModule } from "infrastructure/shared/modules/shared.module";
 import { HASH_SERVICE, UUID_SERVICE } from "infrastructure/shared/modules/shared.token";
 import { UserController } from "infrastructure/user/controllers/user.controller";
@@ -22,6 +21,7 @@ import { UserRepositoryImpl } from "infrastructure/user/repositories/user.reposi
 import { UserFactoryService } from "~/application/user/services/user-factory/user-factory.service";
 import { CreateUserUseCase } from "~/application/user/use-cases/create-user/create-user.use-cases";
 import { GetUserByEmailUseCase } from "~/application/user/use-cases/get-user-by-email/get-user-by-email.use-cases";
+import { UpdateUserPasswordUseCase } from "~/application/user/use-cases/update-user-password/update-user-password.use-cases";
 
 const userRepository: Provider = {
 	provide: USER_REPOSITORY,

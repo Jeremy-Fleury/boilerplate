@@ -1,16 +1,15 @@
 import type { Prisma } from "@prisma/client";
-import type { Email } from "domain/shared/value-objects/email.vo";
 import { User } from "domain/user/entities/user.entity";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
-import type { PrismaService } from "infrastructure/prisma/services/prisma.service";
+import type { PrismaService } from "infrastructure/database-prisma/services/prisma.service";
 
 export class UserRepositoryImpl implements IUserRepository {
 	constructor(private readonly prisma: PrismaService | Prisma.TransactionClient) {}
 
-	async findByEmail(email: Email): Promise<User | null> {
+	async findByEmail(email: string): Promise<User | null> {
 		const user = await this.prisma.user.findUnique({
 			where: {
-				email: email.value,
+				email,
 			},
 		});
 
@@ -18,7 +17,7 @@ export class UserRepositoryImpl implements IUserRepository {
 			return null;
 		}
 
-		return User.fromJson(user);
+		return new User(user);
 	}
 
 	async create(user: User): Promise<User> {
@@ -26,24 +25,24 @@ export class UserRepositoryImpl implements IUserRepository {
 			data: user.toJson(),
 		});
 
-		return User.fromJson(createdUser);
+		return new User(createdUser);
 	}
 
 	async update(user: User): Promise<User> {
 		const updatedUser = await this.prisma.user.update({
 			where: {
-				uuid: user.uuid.value,
+				uuid: user.uuid,
 			},
 			data: user.toJson(),
 		});
 
-		return User.fromJson(updatedUser);
+		return new User(updatedUser);
 	}
 
-	async delete(email: Email): Promise<void> {
+	async delete(email: string): Promise<void> {
 		await this.prisma.user.delete({
 			where: {
-				email: email.value,
+				email,
 			},
 		});
 	}

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Inject, Param, Post, Put } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
-import type { UpdateUserPasswordUseCase } from "application/user/use-cases/update-user.use-cases";
+import type { UpdateUserPasswordUseCase } from "application/user/use-cases/update-user-password/update-user-password.use-cases";
 import {
 	CREATE_USER_USE_CASE,
 	GET_USER_BY_EMAIL_USE_CASE,
@@ -26,20 +26,20 @@ export class UserController {
 	@Get()
 	async getByEmail(@Param("email") email: string): Promise<UserOutputDto> {
 		const user = await this.getUserByEmailUseCase.execute(email);
-		return UserOutputDto.map(user);
+		return UserOutputDto.from(user);
 	}
 
 	@ApiBody({ type: UserInputDto })
 	@Post()
 	async create(@Body() dto: UserInputDto): Promise<UserOutputDto> {
 		const user = await this.createUserUseCase.execute(dto);
-		return UserOutputDto.map(user);
+		return UserOutputDto.from(user);
 	}
 
 	@ApiBody({ type: UserInputDto })
 	@Put()
 	async updatePassword(@Body() dto: UserInputDto): Promise<UserOutputDto> {
 		const user = await this.updateUserPasswordUseCase.execute(dto);
-		return UserOutputDto.map(user);
+		return UserOutputDto.from(user);
 	}
 }

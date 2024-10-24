@@ -23,10 +23,10 @@ export class UserOutputDto {
 	@IsNotEmpty()
 	email: string;
 
-	static map(user: User): UserOutputDto {
+	static from(user: User): UserOutputDto {
 		return {
-			uuid: user.uuid.value,
-			email: user.email.value,
+			uuid: user.uuid,
+			email: user.email,
 		};
 	}
 }

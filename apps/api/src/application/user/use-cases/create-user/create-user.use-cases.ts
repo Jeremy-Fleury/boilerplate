@@ -1,5 +1,3 @@
-import { Email } from "domain/shared/value-objects/email.vo";
-import { Password } from "domain/shared/value-objects/password.vo";
 import type { User } from "domain/user/entities/user.entity";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
 import type { UserFactoryService } from "~/application/user/services/user-factory/user-factory.service";
@@ -17,8 +15,8 @@ export class CreateUserUseCase {
 
 	async execute(params: ICreateUserUseCaseParams): Promise<User> {
 		const user = this.userFactoryService.create({
-			email: new Email(params.email),
-			password: new Password(params.password),
+			email: params.email,
+			password: params.password,
 		});
 
 		const createdUser = await this.userRepository.create(user);
