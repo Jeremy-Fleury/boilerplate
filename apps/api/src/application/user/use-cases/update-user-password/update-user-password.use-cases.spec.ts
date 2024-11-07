@@ -21,7 +21,7 @@ describe("UpdateUserPasswordUseCase", () => {
 		unitOfWorkService = mockUnitOfWorkService();
 		unitOfWorkContext = mockUnitOfWorkContext();
 
-		useCase = new UpdateUserPasswordUseCase(unitOfWorkService, hashService);
+		useCase = new UpdateUserPasswordUseCase(hashService, unitOfWorkService, unitOfWorkContext);
 	});
 
 	it("should update the user password successfully", async () => {

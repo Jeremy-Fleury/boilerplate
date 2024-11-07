@@ -6,9 +6,7 @@ export function LoginPage() {
 
 	return (
 		<div className="flex items-center justify-center h-screen gap-10 p-10">
-			<div className="w-1/2">
-				<CreateUserForm onCreateUser={createUser} />
-			</div>
+			<CreateUserForm onCreateUser={createUser} />
 		</div>
 	);
 }
