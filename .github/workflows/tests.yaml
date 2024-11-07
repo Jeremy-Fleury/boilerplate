@@ -2,35 +2,58 @@ on: [workflow_call]
 
 jobs:
   tests:
-    name: Unit tests
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: admin
+          POSTGRES_DB: db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U admin"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
-    - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Postgres health check
+        run: until pg_isready -h localhost -p 5432; do echo "Waiting for postgres..."; sleep 1; done
 
-    - name: Generate Prisma client
-      run: pnpm run prisma:generate
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+        env:
+          DATABASE_URL: postgresql://admin:password@localhost:5432/db?schema=public
 
-    - name: Run tests api
-      run: pnpm run test:api
+      - name: Run API tests
+        run: pnpm test:api
 
-    - name: Run tests e2e
-      run: pnpm run test:api:e2e
+      - name: Run end-to-end tests
+        run: pnpm test:api:e2e
+        env:
+          DATABASE_URL: postgresql://admin:password@localhost:5432/db?schema=public
 
-    - name: Run client tests
-      run: pnpm run test:client
+      - name: Run client tests
+        run: pnpm test:client
+

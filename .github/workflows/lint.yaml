@@ -2,7 +2,6 @@ on: [workflow_call]
 
 jobs:
   lint:
-    name: Biome lint
     runs-on: ubuntu-latest
 
     steps:

@@ -10,9 +10,7 @@ on:
 
 jobs:
   lint:
-    name: Lint
     uses: ./.github/workflows/lint.yaml
 
   tests:
-    name: Tests
     uses: ./.github/workflows/tests.yaml
