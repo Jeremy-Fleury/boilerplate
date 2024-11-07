@@ -5,7 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"start:dev": "vite",
-		"build": "tsc -b && vite build"
+		"build": "tsc -b && vite build",
+		"test": "jest"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "3.9.1",
