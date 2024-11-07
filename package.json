@@ -12,7 +12,8 @@
 		"prepare": "husky",
 		"compose": "docker-compose up -d",
 		"start:dev": "pnpm compose && concurrently \"pnpm --filter client start:dev\" \"pnpm --filter api start:dev\"",
-		"test": "pnpm --filter api test"
+		"test:api": "pnpm --filter api test",
+		"test:client": "pnpm --filter client test"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.2",
