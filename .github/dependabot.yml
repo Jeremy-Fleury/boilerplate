@@ -12,3 +12,4 @@ updates:
           - '*'
         update-types:
           - 'minor'
+    open-pull-requests-limit: 25
