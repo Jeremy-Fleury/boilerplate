@@ -3,9 +3,7 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: daily
-    commit-message:
-      prefix: "deps" 
+      interval: weekly
     labels:
       - "dependencies"
     groups:
