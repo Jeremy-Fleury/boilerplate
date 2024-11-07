@@ -1,6 +1,6 @@
+import type { UserFactoryService } from "application/user/services/user-factory/user-factory.service";
 import type { User } from "domain/user/entities/user.entity";
 import type { IUserRepository } from "domain/user/repositories/user.repository.interface";
-import type { UserFactoryService } from "~/application/user/services/user-factory/user-factory.service";
 
 interface ICreateUserUseCaseParams {
 	email: string;

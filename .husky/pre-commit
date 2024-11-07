@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 pnpm run check
 pnpm run test:api
+pnpm run test:api:e2e
 pnpm run test:client

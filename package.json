@@ -13,7 +13,9 @@
 		"compose": "docker-compose up -d",
 		"start:dev": "pnpm compose && concurrently \"pnpm --filter client start:dev\" \"pnpm --filter api start:dev\"",
 		"test:api": "pnpm --filter api test",
-		"test:client": "pnpm --filter client test"
+		"test:api:e2e": "pnpm --filter api test:e2e",
+		"test:client": "pnpm --filter client test",
+		"prisma:generate": "pnpm --filter api prisma:generate"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.2",

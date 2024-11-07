@@ -23,8 +23,14 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
-    - name: Run tests
+    - name: Generate Prisma client
+      run: pnpm run prisma:generate
+
+    - name: Run tests api
       run: pnpm run test:api
+
+    - name: Run tests e2e
+      run: pnpm run test:api:e2e
 
     - name: Run client tests
       run: pnpm run test:client
