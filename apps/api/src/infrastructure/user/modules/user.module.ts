@@ -58,7 +58,7 @@ const createUserUseCase: Provider = {
 const updateUserPasswordUseCase: Provider = {
 	provide: UPDATE_USER_PASSWORD_USE_CASE,
 	useFactory: (unitOfWorkService: IUnitOfWorkService, hashService: IHashService) => {
-		return new UpdateUserPasswordUseCase(unitOfWorkService, hashService);
+		return new UpdateUserPasswordUseCase(hashService, unitOfWorkService);
 	},
 	inject: [UNIT_OF_WORK_SERVICE, HASH_SERVICE],
 };
