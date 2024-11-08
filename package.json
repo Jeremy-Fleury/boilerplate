@@ -20,7 +20,7 @@
 		"test:client": "pnpm --filter client test"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.2",
+		"@biomejs/biome": "1.9.4",
 		"@commitlint/cli": "19.5.0",
 		"@commitlint/config-conventional": "19.5.0",
 		"concurrently": "9.1.0",
