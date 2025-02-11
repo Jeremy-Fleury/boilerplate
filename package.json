@@ -17,12 +17,14 @@
 		"start:dev": "pnpm compose && concurrently \"pnpm --filter client start:dev\" \"pnpm --filter api start:dev\"",
 		"test:api:e2e": "pnpm --filter api test:e2e",
 		"test:api": "pnpm --filter api test",
-		"test:client": "pnpm --filter client test"
+		"test:client": "pnpm --filter client test",
+		"openapi:generate": "openapi-generator-cli generate -i ./apps/api/openapi.json -g typescript-axios -o ./packages/api-client/"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@commitlint/cli": "19.7.1",
 		"@commitlint/config-conventional": "19.7.1",
+		"@openapitools/openapi-generator-cli": "2.16.3",
 		"concurrently": "9.1.2",
 		"husky": "9.1.7"
 	}

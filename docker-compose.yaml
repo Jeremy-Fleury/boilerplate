@@ -12,14 +12,5 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: always
 
-  openapi-generator:
-    container_name: openapi-generator
-    build:
-      context: .
-      dockerfile: dockerfile.openapi
-    volumes:
-      - ./:/local
-      - ./scripts:/scripts
-
 volumes:
   postgres_data:
